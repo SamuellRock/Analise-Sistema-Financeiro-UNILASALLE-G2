@@ -1,0 +1,154 @@
+name: CI - Projeto G2 Sistema Financeiro
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+
+jobs:
+  validate-project:
+    name: Validar projeto Python e Streamlit
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Baixar repositório
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Atualizar pip
+        run: |
+          python -m pip install --upgrade pip
+
+      - name: Instalar dependências
+        run: |
+          pip install -r requirements.txt
+
+      - name: Conferir estrutura obrigatória
+        run: |
+          test -f app.py
+          test -f README.md
+          test -f index.html
+          test -f requirements.txt
+          test -f dados/simulacao_sistema_financeiro_brasil.csv
+          test -f database/origin/dados_originais.csv
+          test -f database/processed/dados_tratados.csv
+          test -f notebook/analise_sistema_financeiro.ipynb
+          test -f src/services/load_data.py
+          test -f src/services/clean_data.py
+          test -f src/services/transform_data.py
+          test -f src/services/pipeline.py
+          test -f src/kpis/kpi_calculations.py
+          test -f src/utils/helpers.py
+          test -f views/layout/dashboard.py
+          test -f views/layout/theme.py
+          test -f views/components/filters.py
+          test -f views/components/kpi_cards.py
+          test -f views/components/charts.py
+          test -f views/components/tables.py
+
+      - name: Compilar arquivos Python
+        run: |
+          python -m compileall app.py src views
+
+      - name: Validar imports principais
+        run: |
+          python -c "from src.services.load_data import load_original_data; print('load_data ok')"
+          python -c "from src.services.clean_data import clean_financial_data; print('clean_data ok')"
+          python -c "from src.services.transform_data import transform_financial_data; print('transform_data ok')"
+          python -c "from src.services.pipeline import prepare_processed_dataset; print('pipeline ok')"
+          python -c "from src.kpis.kpi_calculations import calculate_general_kpis; print('kpis ok')"
+
+      - name: Validar pipeline de dados
+        run: |
+          python -c "from src.services.pipeline import prepare_processed_dataset; df = prepare_processed_dataset(); assert df.shape == (4440, 29), df.shape; print(df.shape)"
+
+      - name: Validar base tratada e colunas principais
+        run: |
+          python - << 'PY'
+          import pandas as pd
+
+          df = pd.read_csv("database/processed/dados_tratados.csv")
+
+          colunas_obrigatorias = [
+              "ano",
+              "mes",
+              "data",
+              "regiao",
+              "uf",
+              "modalidade_credito",
+              "setor_economico",
+              "risco_credito",
+              "valor_credito",
+              "taxa_juros",
+              "inadimplencia_percentual",
+              "quantidade_clientes",
+              "renda_media",
+              "prazo_medio_pagamento",
+              "credito_medio_por_cliente",
+              "risco_score",
+              "faixa_inadimplencia",
+              "faixa_juros",
+              "faixa_renda",
+              "faixa_prazo_pagamento",
+              "operacao_critica",
+              "participacao_credito_percentual",
+              "ordem_periodo",
+              "periodo_rotulo",
+          ]
+
+          faltantes = [col for col in colunas_obrigatorias if col not in df.columns]
+
+          assert df.shape == (4440, 29), df.shape
+          assert not faltantes, f"Colunas faltando: {faltantes}"
+          assert df.duplicated().sum() == 0, "Existem duplicatas completas na base tratada"
+
+          print("Base tratada validada:", df.shape)
+          PY
+
+      - name: Validar KPIs principais
+        run: |
+          python - << 'PY'
+          import pandas as pd
+          from src.kpis.kpi_calculations import calculate_general_kpis
+
+          df = pd.read_csv("database/processed/dados_tratados.csv")
+          kpis = calculate_general_kpis(df)
+
+          required = [
+              "volume_total_credito",
+              "taxa_media_juros",
+              "inadimplencia_media",
+              "total_clientes",
+              "renda_media_geral",
+              "prazo_medio_pagamento",
+              "credito_medio_por_cliente",
+              "percentual_operacoes_criticas",
+          ]
+
+          missing = [key for key in required if key not in kpis]
+          assert not missing, f"KPIs ausentes: {missing}"
+          assert kpis["volume_total_credito"] > 0
+          assert kpis["total_clientes"] > 0
+
+          print("KPIs validados:")
+          print(kpis)
+          PY
+
+      - name: Validar Streamlit
+        run: |
+          python -m streamlit run app.py --server.headless=true --server.port=8501 &
+          STREAMLIT_PID=$!
+          sleep 25
+          curl --fail http://localhost:8501/_stcore/health
+          kill $STREAMLIT_PID
