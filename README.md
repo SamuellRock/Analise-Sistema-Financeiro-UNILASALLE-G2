@@ -207,6 +207,18 @@ O projeto foi preparado para tres frentes de publicacao:
 - pagina estatica no GitHub Pages
 - dashboard no Streamlit Community Cloud
 
+## 16. Links do projeto
+
+- [Repositorio GitHub](PREENCHER_LINK_DO_REPOSITORIO)
+- [Pagina do Projeto - GitHub Pages](PREENCHER_LINK_DO_GITHUB_PAGES)
+- [Dashboard Streamlit](https://unilasalle-g2.streamlit.app/)
+
+## 17. Dashboard publicado
+
+O dashboard publico do projeto esta disponivel em:
+
+- [Dashboard Streamlit](https://unilasalle-g2.streamlit.app/)
+
 
 ## 18. Autor
 
