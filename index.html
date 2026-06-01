@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Projeto G2 | Analise do Sistema Financeiro e Credito no Brasil</title>
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --surface: #ffffff;
+      --text: #172033;
+      --muted: #58627a;
+      --primary: #0f766e;
+      --secondary: #1d4ed8;
+      --border: #d9e1ee;
+      --shadow: 0 16px 40px rgba(23, 32, 51, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.55;
+    }
+
+    .page {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 32px 20px 56px;
+    }
+
+    .hero,
+    .section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+
+    h1, h2, h3 {
+      margin-top: 0;
+      color: var(--text);
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 12px;
+    }
+
+    h2 {
+      font-size: 1.3rem;
+      margin-bottom: 14px;
+    }
+
+    p, li {
+      color: var(--muted);
+    }
+
+    .lead {
+      font-size: 1.05rem;
+      margin-bottom: 18px;
+    }
+
+    .notice {
+      border-left: 4px solid var(--primary);
+      background: #edf9f7;
+      padding: 12px 14px;
+      color: var(--text);
+      margin-top: 16px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      background: #fbfcfe;
+    }
+
+    .card strong {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+
+    .links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .button {
+      display: inline-block;
+      text-decoration: none;
+      padding: 10px 16px;
+      border-radius: 8px;
+      border: 1px solid transparent;
+      font-weight: 700;
+    }
+
+    .button-primary {
+      background: var(--primary);
+      color: #ffffff;
+    }
+
+    .button-secondary {
+      background: #eff6ff;
+      color: var(--secondary);
+      border-color: #bfdbfe;
+    }
+
+    .button-muted {
+      background: #f8fafc;
+      color: var(--text);
+      border-color: var(--border);
+    }
+
+    ul {
+      padding-left: 18px;
+      margin-bottom: 0;
+    }
+
+    code {
+      background: #eef2f7;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    footer {
+      color: var(--muted);
+      font-size: 0.95rem;
+      text-align: center;
+      padding-top: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <section class="hero">
+      <h1>Analise do Sistema Financeiro e Credito no Brasil</h1>
+      <p class="lead">
+        Projeto academico de analise de dados com notebook documentado, pipeline em Python e dashboard Streamlit para explorar volume de credito, juros, inadimplencia, risco e recortes territoriais.
+      </p>
+      <p>
+        O projeto organiza uma base simulada do sistema financeiro brasileiro em um fluxo que passa por validacao, limpeza, transformacao, calculo de indicadores e visualizacao interativa.
+      </p>
+      <div class="links">
+        <a class="button button-primary" href="https://SEU-APP.streamlit.app/" target="_blank" rel="noreferrer">Abrir dashboard</a>
+        <a class="button button-secondary" href="https://github.com/SEU-USUARIO/SEU-REPOSITORIO" target="_blank" rel="noreferrer">Repositorio GitHub</a>
+        <a class="button button-muted" href="https://github.com/SEU-USUARIO/SEU-REPOSITORIO/blob/main/notebook/analise_sistema_financeiro.ipynb" target="_blank" rel="noreferrer">Notebook</a>
+      </div>
+      <div class="notice">
+        Esta pagina usa links de placeholder. Substitua os enderecos antes da publicacao final.
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Resumo do problema</h2>
+      <p>
+        A proposta do trabalho e compreender o comportamento do credito no Brasil em uma serie temporal simulada, observando como o volume financeiro, as taxas de juros, a inadimplencia e o risco se distribuem ao longo do tempo, por territorio e por perfil de operacao.
+      </p>
+    </section>
+
+    <section class="section">
+      <h2>Base de dados</h2>
+      <div class="grid">
+        <div class="card">
+          <strong>Arquivo principal</strong>
+          <span><code>dados/simulacao_sistema_financeiro_brasil.csv</code></span>
+        </div>
+        <div class="card">
+          <strong>Periodo</strong>
+          <span>2015 a 2024</span>
+        </div>
+        <div class="card">
+          <strong>Escala da base tratada</strong>
+          <span>4.440 linhas e 29 colunas</span>
+        </div>
+        <div class="card">
+          <strong>Natureza</strong>
+          <span>Base simulada para uso academico</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>KPIs principais</h2>
+      <div class="grid">
+        <div class="card"><strong>Volume total de credito</strong><span>Consolidacao do valor financeiro da carteira analisada.</span></div>
+        <div class="card"><strong>Taxa media de juros</strong><span>Media agregada das taxas observadas no recorte selecionado.</span></div>
+        <div class="card"><strong>Inadimplencia media</strong><span>Indicador sintetico de atraso e pressao de risco.</span></div>
+        <div class="card"><strong>Total de clientes</strong><span>Escala de atendimento associada ao credito analisado.</span></div>
+        <div class="card"><strong>Credito medio por cliente</strong><span>Relacao entre volume financeiro e base de clientes.</span></div>
+        <div class="card"><strong>Percentual de operacoes criticas</strong><span>Sinalizador exploratorio derivado das regras do projeto.</span></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Analises realizadas</h2>
+      <ul>
+        <li>Limpeza, padronizacao e validacao inicial da base.</li>
+        <li>Engenharia de atributos para risco, faixas e apoio temporal.</li>
+        <li>KPIs gerais e tabelas consolidadas.</li>
+        <li>Analise exploratoria com distribuicoes e comparacoes.</li>
+        <li>Analise temporal do credito, juros, inadimplencia e clientes.</li>
+        <li>Analise regional, estadual, por modalidade, setor e risco.</li>
+        <li>Correlacoes e relacoes estatisticas entre variaveis numericas.</li>
+        <li>Preparacao conceitual para o dashboard Streamlit.</li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <h2>Tecnologias</h2>
+      <div class="grid">
+        <div class="card"><strong>Python</strong><span>Base da limpeza, transformacao e organizacao do projeto.</span></div>
+        <div class="card"><strong>Pandas e NumPy</strong><span>Manipulacao da base e calculo de indicadores.</span></div>
+        <div class="card"><strong>Matplotlib e Seaborn</strong><span>Analise exploratoria no notebook.</span></div>
+        <div class="card"><strong>Plotly e Streamlit</strong><span>Visualizacao interativa e dashboard final.</span></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Estrutura resumida do projeto</h2>
+      <ul>
+        <li><code>notebook/</code>: notebook principal com o ciclo analitico.</li>
+        <li><code>src/services/</code>: carga, limpeza, transformacao e pipeline.</li>
+        <li><code>src/kpis/</code>: calculos de indicadores e agregacoes.</li>
+        <li><code>views/</code>: layout, filtros, graficos, cards e tabelas do dashboard.</li>
+        <li><code>database/</code>: copia da base original e base tratada.</li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <h2>Autor</h2>
+      <p>
+        Samuel Elias da Silva
+      </p>
+      <p>
+        Projeto desenvolvido para a disciplina de Analise e Visualizacao de Dados com Python.
+      </p>
+    </section>
+
+    <footer>
+      Projeto preparado para publicacao em GitHub, GitHub Pages e Streamlit Community Cloud.
+    </footer>
+  </div>
+</body>
+</html>

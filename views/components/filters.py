@@ -1,0 +1,63 @@
+"""Sidebar filters for the Streamlit dashboard."""
+
+from __future__ import annotations
+
+import pandas as pd
+import streamlit as st
+
+
+FILTER_COLUMNS = [
+    "ano",
+    "mes",
+    "regiao",
+    "uf",
+    "modalidade_credito",
+    "setor_economico",
+    "risco_credito",
+    "faixa_inadimplencia",
+    "faixa_juros",
+]
+
+
+FILTER_LABELS = {
+    "ano": "Ano",
+    "mes": "Mes",
+    "regiao": "Regiao",
+    "uf": "UF",
+    "modalidade_credito": "Modalidade de credito",
+    "setor_economico": "Setor economico",
+    "risco_credito": "Risco de credito",
+    "faixa_inadimplencia": "Faixa de inadimplencia",
+    "faixa_juros": "Faixa de juros",
+}
+
+
+def _normalize_selection(selection, default_values):
+    return selection if selection else list(default_values)
+
+
+def render_filters(df: pd.DataFrame) -> dict[str, list]:
+    """Render sidebar filters and return the selected values."""
+    st.sidebar.header("Filtros")
+    st.sidebar.caption("Selecione os recortes desejados. Se nada for escolhido, todos os valores serao considerados.")
+
+    selections: dict[str, list] = {}
+    for column in FILTER_COLUMNS:
+        options = sorted(df[column].dropna().unique().tolist())
+        selected = st.sidebar.multiselect(
+            FILTER_LABELS[column],
+            options=options,
+            default=options,
+        )
+        selections[column] = _normalize_selection(selected, options)
+
+    return selections
+
+
+def apply_dashboard_filters(df: pd.DataFrame, selections: dict[str, list]) -> pd.DataFrame:
+    """Apply the sidebar filters to the dashboard DataFrame."""
+    filtered_df = df.copy()
+    for column, values in selections.items():
+        if values:
+            filtered_df = filtered_df.loc[filtered_df[column].isin(values)].copy()
+    return filtered_df.reset_index(drop=True)
