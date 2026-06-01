@@ -85,11 +85,6 @@ PROJETO-G2/
 |   `-- layout/
 |       |-- theme.py
 |       `-- dashboard.py
-`-- .docs/
-    |-- desenvolvimento-app-analise-financeira-brasil.md
-    |-- Task_Detail_notebook.md
-    |-- checklist-entrega.md
-    `-- comandos-validacao.md
 ```
 
 ## 7. Como executar localmente
@@ -110,12 +105,6 @@ python -m venv .venv
 
 ```bash
 pip install -r requirements.txt
-```
-
-### Gerar ou validar a base tratada pelo pipeline
-
-```bash
-python -c "from src.services.pipeline import prepare_processed_dataset; df = prepare_processed_dataset(); print(df.shape)"
 ```
 
 ### Validar compilacao dos modulos
@@ -218,30 +207,6 @@ O projeto foi preparado para tres frentes de publicacao:
 - pagina estatica no GitHub Pages
 - dashboard no Streamlit Community Cloud
 
-## 16. Links de publicacao
-
-Preencher com os links finais quando a publicacao for concluida:
-
-- GitHub: `https://github.com/SEU-USUARIO/SEU-REPOSITORIO`
-- GitHub Pages: `https://SEU-USUARIO.github.io/SEU-REPOSITORIO/`
-- Streamlit: `https://SEU-APP.streamlit.app/`
-- Notebook no GitHub: `https://github.com/SEU-USUARIO/SEU-REPOSITORIO/blob/main/notebook/analise_sistema_financeiro.ipynb`
-
-## 17. Checklist de entrega
-
-- [x] notebook principal estruturado
-- [x] pipeline de tratamento implementado
-- [x] base original preservada
-- [x] base tratada gerada
-- [x] modulos de KPI implementados
-- [x] dashboard Streamlit estruturado
-- [x] `README.md` atualizado
-- [x] `index.html` preparado para GitHub Pages
-- [x] `requirements.txt` presente
-- [ ] links finais de publicacao preenchidos
-- [ ] publicacao em GitHub confirmada
-- [ ] publicacao em GitHub Pages confirmada
-- [ ] publicacao em Streamlit Community Cloud confirmada
 
 ## 18. Autor
 
